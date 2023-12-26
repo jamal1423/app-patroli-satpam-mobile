@@ -223,8 +223,8 @@ class _PartPageHomeState extends State<PartPageHome> {
     LatLng _positionNow = LatLng(latt!, longg!);
 
     //kosan
-    // double lt = -7.378822662421588;
-    // double lg = 112.646988897764;
+    // double latit = -7.378822662421588;
+    // double longit = 112.646988897764;
 
     // double? distance = calculateDistance(latit, longit, _currentPosition!.latitude, _currentPosition!.longitude);
 
@@ -392,6 +392,12 @@ class _PartPageHomeState extends State<PartPageHome> {
                             //   ),
                             //   (route) => false,
                             // );
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                backgroundColor: Colors.red,
+                                content: Text("Menu Master Shift")
+                              ),
+                            );
                           },
                           splashColor: Colors.transparent,
                           child: Column(
@@ -419,6 +425,12 @@ class _PartPageHomeState extends State<PartPageHome> {
                             //   ),
                             //   (route) => false,
                             // );
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                backgroundColor: Colors.red,
+                                content: Text("Menu Lokasi Scan QR")
+                              ),
+                            );
                           },
                           splashColor: Colors.transparent,
                           child: Column(
@@ -446,6 +458,12 @@ class _PartPageHomeState extends State<PartPageHome> {
                             //   ),
                             //   (route) => false,
                             // );
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                backgroundColor: Colors.red,
+                                content: Text("Menu Jadwal")
+                              ),
+                            );
                           },
                           splashColor: Colors.transparent,
                           child: Column(
@@ -475,35 +493,9 @@ class _PartPageHomeState extends State<PartPageHome> {
                             textAlign: TextAlign.center,
                           )
                         : Text(
-                            "Jarak $distanceToStringMeter Meter dari SBU Plastic Bag",
+                            "Lokasi Anda\n$_address\nJarak $distanceToStringMeter Meter dari SBU Plastic Bag",
                             textAlign: TextAlign.center,
                           ),
-                    // SizedBox(height: 15),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    //   children: [
-                    //     Text(
-                    //       "$_address\nLat: $latt | Long: $longg",
-                    //       textAlign: TextAlign.center,
-                    //     )
-                    //   ],
-                    // ),
-
-                    // Container(
-                    //   height: 50,
-                    //   child: Divider(
-                    //       color: Color.fromARGB(255, 217, 216, 216)
-                    //   )
-                    // ),
-                    // SizedBox(height: 15),
-                    // Container(
-                    //   child: Column(
-                    //     children: [
-                    //       // Text("Lokasi anda saat ini.."),
-                    //       Text("$_address\nLat: ${_currentPosition?.latitude} | Long: ${_currentPosition?.longitude}", textAlign: TextAlign.center,),
-                    //     ],
-                    //   ),
-                    // )
                   ],
                 ),
               ),
