@@ -262,13 +262,9 @@ class _PageListScanState extends State<PageListScan> {
         backgroundColor: Color.fromARGB(255, 250, 250, 252),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(2.0),
-          child: Row(
-            children: [
-              Container(
-                color: Colors.grey,
-                height: 0.5,
-              ),
-            ],
+          child: Container(
+              color: Colors.black,
+              height: 0.5,
           ),
         ),
         title: Text("List Lokasi Scan",

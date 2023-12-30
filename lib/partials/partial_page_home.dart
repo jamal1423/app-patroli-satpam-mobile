@@ -1,10 +1,11 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, avoid_unnecessary_containers, prefer_collection_literals, sort_child_properties_last, sized_box_for_whitespace
 import 'dart:convert';
-import 'dart:io';
+// import 'dart:io';
 import 'dart:math';
 import 'package:app_patroli_satpam/models/data_user.dart';
 import 'package:app_patroli_satpam/pages/page_home.dart';
 import 'package:app_patroli_satpam/pages/page_login.dart';
+import 'package:app_patroli_satpam/partials/partial_page_lokasi_scan.dart';
 import 'package:app_patroli_satpam/utils/util_card_home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +18,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:safe_device/safe_device.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
+// import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:http/http.dart' as http;
 
 class PartPageHome extends StatefulWidget {
@@ -244,8 +245,8 @@ class _PartPageHomeState extends State<PartPageHome> {
     String subAdministrativeArea = placeMark.subAdministrativeArea.toString();
     String subLocality = placeMark.subLocality.toString();
     String locality = placeMark.locality.toString();
-    String administrativeArea = placeMark.administrativeArea.toString();
-    String postalCode = placeMark.postalCode.toString();
+    // String administrativeArea = placeMark.administrativeArea.toString();
+    // String postalCode = placeMark.postalCode.toString();
     // String country = placeMark.country.toString();
     String address = "$subLocality, $locality, $subAdministrativeArea";
 
@@ -282,7 +283,7 @@ class _PartPageHomeState extends State<PartPageHome> {
     double? latit = -7.440232;
     double? longit = 112.613748;
 
-    LatLng _positionNow = LatLng(latt!, longg!);
+    // LatLng _positionNow = LatLng(latt!, longg!);
 
     //kosan
     // double latit = -7.378822662421588;
@@ -305,13 +306,9 @@ class _PartPageHomeState extends State<PartPageHome> {
         backgroundColor: Color.fromARGB(255, 250, 250, 252),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(2.0),
-          child: Row(
-            children: [
-              Container(
-                color: Colors.grey,
-                height: 0.5,
-              ),
-            ],
+          child: Container(
+            color: Colors.black,
+            height: 0.5,
           ),
         ),
         title: Row(
@@ -339,8 +336,9 @@ class _PartPageHomeState extends State<PartPageHome> {
                             SizedBox(height: 1),
                             Text(
                               "${snapshot.data!.fullname}",
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 18,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 18,
                                   fontWeight: FontWeight.bold),
                             ),
                           ],
@@ -451,7 +449,7 @@ class _PartPageHomeState extends State<PartPageHome> {
                 myLocationButtonEnabled: true,
                 initialCameraPosition: CameraPosition(
                   target: initialLocation,
-                  zoom: 17,
+                  zoom: 16,
                 ),
                 markers: {
                   Marker(
@@ -511,9 +509,8 @@ class _PartPageHomeState extends State<PartPageHome> {
                             // );
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                backgroundColor: Colors.red,
-                                content: Text("Menu Master Shift")
-                              ),
+                                  backgroundColor: Colors.red,
+                                  content: Text("Menu Master Shift")),
                             );
                           },
                           splashColor: Colors.transparent,
@@ -535,19 +532,20 @@ class _PartPageHomeState extends State<PartPageHome> {
                         ),
                         InkWell(
                           onTap: () {
-                            // Navigator.pushAndRemoveUntil(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (BuildContext context) => PageTopupData(),
-                            //   ),
-                            //   (route) => false,
-                            // );
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                backgroundColor: Colors.red,
-                                content: Text("Menu Lokasi Scan QR")
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    PartPageLokasiScan(),
                               ),
+                              (route) => false,
                             );
+                            // ScaffoldMessenger.of(context).showSnackBar(
+                            //   SnackBar(
+                            //     backgroundColor: Colors.red,
+                            //     content: Text("Menu Lokasi Scan QR")
+                            //   ),
+                            // );
                           },
                           splashColor: Colors.transparent,
                           child: Column(
@@ -560,7 +558,7 @@ class _PartPageHomeState extends State<PartPageHome> {
                                 height: 8,
                               ),
                               Text(
-                                "Lokasi Scan QR",
+                                "Scan QR",
                                 style: TextStyle(color: Colors.black),
                               ),
                             ],
@@ -577,9 +575,8 @@ class _PartPageHomeState extends State<PartPageHome> {
                             // );
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                backgroundColor: Colors.red,
-                                content: Text("Menu Jadwal")
-                              ),
+                                  backgroundColor: Colors.red,
+                                  content: Text("Menu Jadwal")),
                             );
                           },
                           splashColor: Colors.transparent,
@@ -627,7 +624,8 @@ class _PartPageHomeState extends State<PartPageHome> {
     final prefs = await SharedPreferences.getInstance();
     var ss = prefs.getString('employeeID');
     final response = await http.get(
-        Uri.parse("https://patroli-satpam.startdev.my.id/api/v1/get-data-user/$ss"),
+        Uri.parse(
+            "https://patroli-satpam.startdev.my.id/api/v1/get-data-user/$ss"),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
         });
