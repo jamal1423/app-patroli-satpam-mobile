@@ -1,7 +1,10 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, avoid_unnecessary_containers, prefer_collection_literals, sort_child_properties_last, sized_box_for_whitespace
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
+import 'package:app_patroli_satpam/models/data_user.dart';
 import 'package:app_patroli_satpam/pages/page_home.dart';
+import 'package:app_patroli_satpam/pages/page_login.dart';
 import 'package:app_patroli_satpam/utils/util_card_home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +16,9 @@ import 'package:geocoding/geocoding.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:safe_device/safe_device.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:http/http.dart' as http;
 
 class PartPageHome extends StatefulWidget {
   const PartPageHome({super.key});
@@ -31,6 +37,10 @@ class _PartPageHomeState extends State<PartPageHome> {
   BitmapDescriptor markerIcon = BitmapDescriptor.defaultMarker;
 
   LatLng? _currentPosition;
+
+  String employeeID = "";
+  late Future<Datauser> futureDataUser;
+  bool isLoading = true;
 
   // LatLng? _positionNow;
   // bool _isLoading = true;
@@ -90,6 +100,7 @@ class _PartPageHomeState extends State<PartPageHome> {
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
+    controller.showMarkerInfoWindow(MarkerId("KantorPusat"));
   }
 
   void addCustomIcon() {
@@ -172,6 +183,55 @@ class _PartPageHomeState extends State<PartPageHome> {
     ).show();
   }
 
+  getPref() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var islogin = pref.getBool("is_login");
+    if (islogin != null && islogin == true) {
+      setState(() {
+        employeeID = pref.getString("employeeID")!;
+        // pref.setString('username', username);
+      });
+    } else {
+      if (context.mounted) {
+        Navigator.of(context, rootNavigator: true).pop();
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (BuildContext context) => const PageLogin(),
+          ),
+          (route) => false,
+        );
+      }
+    }
+  }
+
+  logOut() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      preferences.remove("is_login");
+      preferences.remove("employeeID");
+      preferences.remove("fullname");
+    });
+
+    if (context.mounted) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (BuildContext context) => const PageLogin(),
+        ),
+        (route) => false,
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text(
+          "Berhasil logout",
+          style: TextStyle(fontSize: 16),
+        )),
+      );
+    }
+  }
+
   // double? latAddr = -7.440232;
   // double? longAddr = 112.613748;
 
@@ -196,7 +256,9 @@ class _PartPageHomeState extends State<PartPageHome> {
 
   @override
   void initState() {
+    getPref();
     getLocation();
+    futureDataUser = fetchDatauser();
     super.initState();
     // initPlatformState();
     //getPlace();
@@ -258,28 +320,83 @@ class _PartPageHomeState extends State<PartPageHome> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Selamat Datang",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold)),
-                SizedBox(height: 1),
-                Text("Moch. Jamal",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold))
+                Padding(
+                  padding: EdgeInsets.all(2),
+                  child: FutureBuilder<Datauser>(
+                    future: futureDataUser,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Selamat Datang",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(height: 1),
+                            Text(
+                              "${snapshot.data!.fullname}",
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 18,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        );
+                      } else if (snapshot.hasError) {
+                        return Text("${snapshot.error}");
+                      }
+                      return const CircularProgressIndicator(
+                        color: Color.fromARGB(255, 167, 168, 168),
+                        strokeWidth: 2,
+                      );
+                    },
+                  ),
+                )
               ],
             ),
-            Container(
-              child: Icon(
-                Icons.person_outline_rounded,
-                color: Colors.black,
-                size: 25,
-              ),
-            ),
+            // Container(
+            //   child: Icon(
+            //     Icons.person_outline_rounded,
+            //     color: Colors.black,
+            //     size: 25,
+            //   ),
+            // ),
           ],
         ),
+        actionsIconTheme: IconThemeData(color: Colors.black),
+        actions: [
+          PopupMenuButton(itemBuilder: (context) {
+            return [
+              const PopupMenuItem<int>(
+                value: 0,
+                child: Text("Profile"),
+              ),
+              const PopupMenuItem<int>(
+                value: 1,
+                child: Text("Settings"),
+              ),
+              const PopupMenuItem<int>(
+                value: 2,
+                child: Text("Logout"),
+              ),
+            ];
+          }, onSelected: (value) {
+            if (value == 0) {
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Text('Ke Menu Profile'),
+              ));
+            } else if (value == 1) {
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Text('Ke Menu Setting'),
+              ));
+            } else if (value == 2) {
+              logOut();
+            }
+          }),
+        ],
       ),
       floatingActionButton: Align(
         alignment: Alignment.centerRight,
@@ -338,7 +455,7 @@ class _PartPageHomeState extends State<PartPageHome> {
                 ),
                 markers: {
                   Marker(
-                    markerId: const MarkerId("Area Patroli"),
+                    markerId: MarkerId("KantorPusat"),
                     // position: LatLng(latt!, longg!),
                     position: initialLocation,
                     draggable: true,
@@ -504,5 +621,24 @@ class _PartPageHomeState extends State<PartPageHome> {
         ),
       ),
     );
+  }
+
+  Future<Datauser> fetchDatauser() async {
+    final prefs = await SharedPreferences.getInstance();
+    var ss = prefs.getString('employeeID');
+    final response = await http.get(
+        Uri.parse("https://patroli-satpam.startdev.my.id/api/v1/get-data-user/$ss"),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        });
+
+    if (response.statusCode == 200) {
+      setState(() {
+        isLoading = false;
+      });
+      return Datauser.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load User.');
+    }
   }
 }

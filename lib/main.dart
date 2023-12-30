@@ -3,6 +3,7 @@
 import 'dart:async';
 
 import 'package:app_patroli_satpam/pages/page_home.dart';
+import 'package:app_patroli_satpam/pages/page_login.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -43,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ()=>Navigator.pushReplacement(context,
             MaterialPageRoute(builder:
                 (context) =>
-                    const PageHome()
+                    const PageLogin()
             )
         )
     );
