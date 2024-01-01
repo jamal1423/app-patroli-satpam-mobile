@@ -6,6 +6,7 @@ import 'package:app_patroli_satpam/models/data_user.dart';
 import 'package:app_patroli_satpam/pages/page_home.dart';
 import 'package:app_patroli_satpam/pages/page_login.dart';
 import 'package:app_patroli_satpam/partials/partial_page_lokasi_scan.dart';
+import 'package:app_patroli_satpam/partials/partial_page_master_shift.dart';
 import 'package:app_patroli_satpam/utils/util_card_home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -500,18 +501,18 @@ class _PartPageHomeState extends State<PartPageHome> {
                       children: [
                         InkWell(
                           onTap: () {
-                            // Navigator.pushAndRemoveUntil(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (BuildContext context) => PageTopupPulsa(),
-                            //   ),
-                            //   (route) => false,
-                            // );
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                  backgroundColor: Colors.red,
-                                  content: Text("Menu Master Shift")),
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (BuildContext context) => PartPageMasterShift(),
+                              ),
+                              (route) => false,
                             );
+                            // ScaffoldMessenger.of(context).showSnackBar(
+                            //   SnackBar(
+                            //       backgroundColor: Colors.red,
+                            //       content: Text("Menu Master Shift")),
+                            // );
                           },
                           splashColor: Colors.transparent,
                           child: Column(

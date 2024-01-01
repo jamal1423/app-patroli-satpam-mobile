@@ -109,14 +109,7 @@ class _PartPageLokasiScanState extends State<PartPageLokasiScan> {
                       ),
                     ],
                   ),
-                )
-              ],
-            ),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                InkWell(
+                ),InkWell(
                   onTap: () {},
                   splashColor: Colors.transparent,
                   child: Column(
@@ -135,6 +128,13 @@ class _PartPageLokasiScanState extends State<PartPageLokasiScan> {
                     ],
                   ),
                 ),
+              ],
+            ),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                
                 InkWell(
                   onTap: () {},
                   splashColor: Colors.transparent,
@@ -153,13 +153,7 @@ class _PartPageLokasiScanState extends State<PartPageLokasiScan> {
                       ),
                     ],
                   ),
-                )
-              ],
-            ),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
+                ),
                 InkWell(
                   onTap: () {},
                   splashColor: Colors.transparent,
@@ -241,13 +235,7 @@ class _PartPageLokasiScanState extends State<PartPageLokasiScan> {
                       ),
                     ],
                   ),
-                )
-              ],
-            ),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
+                ),
                 InkWell(
                   onTap: () {},
                   splashColor: Colors.transparent,
@@ -267,6 +255,12 @@ class _PartPageLokasiScanState extends State<PartPageLokasiScan> {
                     ],
                   ),
                 ),
+              ],
+            ),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
                 InkWell(
                   onTap: () {},
                   splashColor: Colors.transparent,
@@ -285,13 +279,7 @@ class _PartPageLokasiScanState extends State<PartPageLokasiScan> {
                       ),
                     ],
                   ),
-                )
-              ],
-            ),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
+                ),
                 InkWell(
                   onTap: () {},
                   splashColor: Colors.transparent,
